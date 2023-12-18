@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
-public class AimController : MonoBehaviour
+public class Arrow : MonoBehaviour
 {
     [SerializeField] float speed;
     float distancePercentage;
     float splineLength;
     SplineContainer spline;
 
+    [SerializeField] Collider collision;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-            
+
     }
 
     // Update is called once per frame
@@ -31,6 +31,7 @@ public class AimController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(direction, transform.up);
             if (distancePercentage > 1)
             {
+                GameManager.instance.character.RemoveArrow(this);
                 Destroy(gameObject);
             }
         }
@@ -40,5 +41,19 @@ public class AimController : MonoBehaviour
     {
         spline = newSpline;
         splineLength = spline.CalculateLength();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            other.gameObject.GetComponent<Enemy>().CanDamage();
+            Debug.Log("Hit Enemy");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        
     }
 }
