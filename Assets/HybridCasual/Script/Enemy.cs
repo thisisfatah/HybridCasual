@@ -11,11 +11,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] Animator animator;
 
     [SerializeField] float health = 1.0f;
-
+    Collider coll;
 
     private void Awake()
     {
         startPosition = transform.position;
+        coll = GetComponent<Collider>();
     }
 
     public void MoveStepForward()
@@ -36,6 +37,14 @@ public class Enemy : MonoBehaviour
         {
             GameManager.instance.RemoveEnemy(this);
             Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Finish")
+        {
+            GameManager.instance.GameOver();
         }
     }
 }

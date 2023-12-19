@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
     [SerializeField] SpawnSystemEnemy spawnEnemy;
-    List<Enemy> enemies = new List<Enemy>();
     [SerializeField] GameObject shootUI;
+    [SerializeField] List<GameObject> moveUI;
+    [SerializeField] GameObject panelUI;
+
+    List<Enemy> enemies = new List<Enemy>();
     public Character character;
 
     private void Awake()
@@ -46,5 +51,19 @@ public class GameManager : MonoBehaviour
     {
         shootUI.SetActive(isShow);
     }
+
+    public void GameOver()
+    {
+        shootUI.SetActive(false);
+        for (int i = 0; i < moveUI.Count; i++)
+        {
+            moveUI[i].SetActive(false);
+        }
+        panelUI.SetActive(true);
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
-    
